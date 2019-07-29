@@ -24,7 +24,7 @@ export default ({ accounts }) => (
       <p>
         This allows anyone to create sweepstake with name and prize
       </p>
-      <p>
+      <div>
         <strong>Create Sweepstake</strong>
         <ContractForm
           contract="SweepstakeFactory"
@@ -32,7 +32,20 @@ export default ({ accounts }) => (
           labels={["Sweepstake Name", "10000000000000000"]}
           sendArgs={{value:'10000000000000000'}}
         />
+      </div>
+    </div>
+    
+    <div className="section">
+      <h2>Available sweepstakes</h2>
+      <p>
+        List all sweepstake contracts created
       </p>
+      <div>
+        <ContractData
+          contract="SweepstakeFactory"
+          method="getSweepstakes"
+        />
+      </div>
     </div>
     
   </div>

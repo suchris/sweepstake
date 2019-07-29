@@ -8,7 +8,7 @@ The smart contract is set up to allow the following use cases.
   * As an owner I can create a sweepstake with a name and prize.
   * As a player I can enter for the drawing.
   * As a owner I want to randomly select a winner among entries.
-  * As a player I want to redeem the winning prize if I am the winner.
+  * As a player I want to redeem the winning prize if I am selected.
 
 ## Getting started
 
@@ -20,7 +20,7 @@ The smart contract is set up to allow the following use cases.
 
 2. Clone this repository.
     ```sh
-    git clone https://github.com/suchris/sweepstake
+    git https://github.com/suchris/sweepstake
     cd sweepstake
     ```
 

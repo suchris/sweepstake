@@ -10,9 +10,10 @@ const options = {
   },
   contracts: [SweepstakeFactory],
   events: {
+    SweepstakeFactory: ["LogSweepstakeCreated"]
   },
   polls: {
-    accounts: 1500,
+    accounts: 3000,
   },
 };
 

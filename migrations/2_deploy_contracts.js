@@ -1,5 +1,5 @@
-const Sweepstake = artifacts.require("Sweepstake");
+const SweepstakeFactory = artifacts.require("SweepstakeFactory");
 
 module.exports = function(deployer) {
-  deployer.deploy(Sweepstake);
+  deployer.deploy(SweepstakeFactory);
 };

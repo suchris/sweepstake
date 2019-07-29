@@ -30,7 +30,7 @@ export default ({ accounts }) => (
         <ContractForm
           contract="SweepstakeFactory"
           method="createSweepstake"
-          labels={["Sweepstake Name"]}
+          labels={["Sweepstake Name", "Prize Amount"]}
         />
       </p>
     </div>

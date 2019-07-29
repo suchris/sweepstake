@@ -6,7 +6,7 @@ contract('SweepstakeFactory', function(accounts) {
     const alice = accounts[1]
 
     const name = "Fantastic Vacation"
-    const prize = 1000000000000000000
+    const prize = '10000000000000000'
     
     let factory
     

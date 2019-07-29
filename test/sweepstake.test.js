@@ -10,25 +10,16 @@ contract('Sweepstake', function(accounts) {
     const emptyAddress = '0x0000000000000000000000000000000000000000'
 
     const name = 'Fantastic Vacation'
-    const prize = '1000000000000000000'
+    const prize = '10000000000000000'
 
-    let factory
     let instance
 
     beforeEach(async () => {
-        factory = await SweepstakeFactory.new()
-        console.log('fac', factory.methods)
-        /*
-        instance = await factory.methods.createSweepstake.call(name, prize, {from: owner, value: prize})
-        console.log('instance', Object.keys(instance))
-        console.log('instance', instance.methods)
-        */
-        let result = await factory.createSweepstake(name, prize, {from: owner, value: prize})
-        instance = result[0]
-        console.log('instance', instance)
+       instance = await Sweepstake.new(name, prize)
+       await instance.sendTransaction({from: owner, value: prize})
     })
 
-    it.only("should emit event LogEntry when someone enters the sweepstake", async() => {
+    it("should emit event LogEntered when someone enters the sweepstake", async() => {
         let eventEmitted = false
         const tx = await instance.enterSweepstake({ from: alice })
 

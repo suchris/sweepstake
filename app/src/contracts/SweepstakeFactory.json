@@ -3624,10 +3624,16 @@
       "links": {},
       "address": "0x7F91D6fec317FdC0Da3F0720b80Ee079dB3dD6b7",
       "transactionHash": "0xc06995d1f64f9230f7c5874784c3174804037da4d27fc5595e9b0e6325af0318"
+    },
+    "1564378449955": {
+      "events": {},
+      "links": {},
+      "address": "0x249f56705DFB6fb6045FFa1Aa6337fe3E486902C",
+      "transactionHash": "0x434e1c3c953ffa774d78f9ef9bbc2bab25090d7c2cb53a93ab84daf3d3b341c8"
     }
   },
   "schemaVersion": "3.0.11",
-  "updatedAt": "2019-07-29T04:41:12.937Z",
+  "updatedAt": "2019-07-29T05:34:32.440Z",
   "devdoc": {
     "methods": {
       "createSweepstake(string,uint256)": {

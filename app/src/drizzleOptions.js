@@ -1,6 +1,3 @@
-import SimpleStorage from "./contracts/SimpleStorage.json";
-import ComplexStorage from "./contracts/ComplexStorage.json";
-import TutorialToken from "./contracts/TutorialToken.json";
 import SweepstakeFactory from "./contracts/SweepstakeFactory.json";
 
 const options = {
@@ -11,9 +8,8 @@ const options = {
       url: "ws://127.0.0.1:8545",
     },
   },
-  contracts: [SimpleStorage, ComplexStorage, TutorialToken, SweepstakeFactory],
+  contracts: [SweepstakeFactory],
   events: {
-    SimpleStorage: ["StorageSet"],
   },
   polls: {
     accounts: 1500,

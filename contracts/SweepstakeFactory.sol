@@ -19,24 +19,6 @@ contract SweepstakeFactory is Pausable {
     /// @param sweepstakes All sweepstakes in the system
     event LogSweepstakeCreated(address sweepstake, uint numSweepstakes, address[] sweepstakes);
 
-    /// @notice factory method to create a new Sweepstake contract
-    /// @param _name The sweepstake's name
-    /// @dev emit LogSweepstakeCreated event
-    function createSweepstake(string memory _name, uint _prize)
-        public
-        payable
-        whenNotPaused
-        hasEnoughFunds(_prize)
-        refundExcessFunds(_prize)
-        returns (Sweepstake)
-    {
-        Sweepstake theSweepstake = new Sweepstake(_name, _prize);
-        address(theSweepstake).transfer(_prize);
-        sweepstakes.push(address(theSweepstake));
-        emit LogSweepstakeCreated(address(theSweepstake), sweepstakes.length, sweepstakes);
-        return theSweepstake;
-    }
-
     /// @notice check if caller has enough funds
     modifier hasEnoughFunds(uint _prize) {
         require (
@@ -53,6 +35,23 @@ contract SweepstakeFactory is Pausable {
         if (amountToRefund > 0) {
             msg.sender.transfer(amountToRefund);
         }
+    }
+    /// @notice factory method to create a new Sweepstake contract
+    /// @param _name The sweepstake's name
+    /// @dev emit LogSweepstakeCreated event
+    function createSweepstake(string memory _name, uint _prize)
+        public
+        payable
+        whenNotPaused
+        hasEnoughFunds(_prize)
+        refundExcessFunds(_prize)
+        returns (Sweepstake)
+    {
+        Sweepstake theSweepstake = new Sweepstake(_name, _prize);
+        address(theSweepstake).transfer(_prize);
+        sweepstakes.push(address(theSweepstake));
+        emit LogSweepstakeCreated(address(theSweepstake), sweepstakes.length, sweepstakes);
+        return theSweepstake;
     }
 
     /// @notice get owner

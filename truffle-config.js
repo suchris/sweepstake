@@ -4,8 +4,6 @@ const mnemonic = "allow age token fantasy engine useless bench hawk ticket ginge
 const infuraAPIkey = "cbc36b9572214781b09811d7339d58d9";
 
 module.exports = {
-  // See <http://truffleframework.com/docs/advanced/configuration>
-  // to customize your Truffle configuration!
   contracts_build_directory: path.join(__dirname, "app/src/contracts"),
   networks: {
     development: {

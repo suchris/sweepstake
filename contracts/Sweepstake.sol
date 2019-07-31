@@ -1,8 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "./provableAPI.sol";
-
-contract Sweepstake is usingProvable {
+contract Sweepstake {
     address owner;          // address of owner
     string name;            // name of sweepstake
     uint prize;             // prize of sweepstake
@@ -10,16 +8,30 @@ contract Sweepstake is usingProvable {
     address winner;         // winner selected
     State state;            // state of the contract
 
-    // 3 states for a contract, open to enter, winner is selected, prize is claimed
+    // three states of the contract, open to enter, winner is selected, prize is claimed
     enum State {Opened, Selected, Claimed}
 
+    /// @notice log sweepstake state Opened
+    /// @param _name name of sweepstake
     event LogOpened (string _name);
-    event LogSelected (address _player);
-    event LogClaimed (address _player);
+
+    /// @notice log sweepstake state Selected
+    /// @param _winner player was selected to be the winner
+    event LogSelected (address _winner);
+
+    /// @notice log sweepstake state Claimed
+    /// @param _winner winner that claimed the prize
+    event LogClaimed (address _winner);
+
+    /// @notice log caller entered into sweepstake
+    /// @param _player player entered into sweepstake
     event LogEntered (address _player);
+
+    /// @notice log random number selected
+    /// @param _number random number selected
     event LogRandomNumber(uint _number);
 
-    /// @notice create a new sweepstake
+    /// @notice constructor creates a new sweepstake
     /// @param _name name of the sweepstake
     /// @param _prize the prize of the prize
     /// @dev emit LogOpened event
@@ -32,9 +44,11 @@ contract Sweepstake is usingProvable {
         state = State.Opened;
         emit LogOpened(name);
     }
+
+    /// @notice accept funds
     function() external payable {}
 
-    /// @notice check if caller is owner
+    /// @notice modifier to check if caller is owner
     modifier isOwner() {
         require (
             msg.sender == owner,
@@ -43,7 +57,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice check if caller is not owner
+    /// @notice modifier to check if caller is not owner
     modifier isNotOwner() {
         require (
             msg.sender != owner,
@@ -52,7 +66,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice check if sweepstake is opened to enter
+    /// @notice modifier to check if sweepstake is opened to enter
     modifier isOpened() {
         require (
             state == State.Opened,
@@ -61,7 +75,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice check if winner is selected
+    /// @notice modifier to check if winner is selected
     modifier isSelected() {
         require (
             state == State.Selected,
@@ -70,7 +84,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice check if caller is winner
+    /// @notice modifier to check if caller is winner
     modifier isWinner() {
         require (
             msg.sender == winner,
@@ -79,7 +93,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice check if sweepstake has players entered
+    /// @notice modifier check if sweepstake has players entered
     modifier hasPlayers() {
         require (
             players.length > 0,
@@ -88,7 +102,7 @@ contract Sweepstake is usingProvable {
         _;
     }
 
-    /// @notice caller can enter sweepstake
+    /// @notice function to enter sweepstake
     /// @dev emit LogEntered event
     function enterSweepstake()
         public
@@ -99,29 +113,26 @@ contract Sweepstake is usingProvable {
         emit LogEntered(msg.sender);
     }
 
-    /// @notice select winner
+    /// @notice funnction to select a winner among players randomly
     /// @dev emit LogSelected event
+    /// @dev emit LogRandomNumber event
     function selectWinner()
         public
         isOwner
         isOpened
         hasPlayers
     {
-        // random drawing from players
-        /*
-        provable_setProof(proofType_Ledger);
-        bytes32 _result = provable_newRandomDSQuery(0,7,200000);
-        uint randomNumber = uint256(keccak256(abi.encodePacked(_result))) % (players.length-1);
-        */
+        // random number selected based string encoded using time, caller address and block difficulty
         uint randomNumber = uint(keccak256(abi.encodePacked(now, msg.sender, block.difficulty))) % players.length;
+        
+        state = State.Selected;
         winner = players[randomNumber];
 
-        state = State.Selected;
         emit LogSelected(winner);
         emit LogRandomNumber(randomNumber);
     }
 
-    /// @notice return owner of the sweepstake
+    /// @notice function returns owner of the sweepstake
     /// @return sweepstake owner address
     function getOwner()
         public
@@ -131,8 +142,8 @@ contract Sweepstake is usingProvable {
         return owner;
     }
 
-    /// @notice get winner of the sweepstake
-    /// @return sweepstake winner address
+    /// @notice function returns winner of the sweepstake
+    /// @return winner address
     function getWinner()
         public
         view
@@ -141,8 +152,8 @@ contract Sweepstake is usingProvable {
         return winner;
     }
 
-    /// @notice get players that entered into the sweepstake
-    /// @return players
+    /// @notice function returns a list of players that entered the sweepstake
+    /// @return an array of addresses of players
     function getPlayers()
         public
         view
@@ -151,7 +162,7 @@ contract Sweepstake is usingProvable {
         return players;
     }
 
-    /// @notice caller can claim prize of sweepstake
+    /// @notice function allows winner to claim prize of sweepstake
     /// @dev emit LogClaimed event
     function claimPrize()
         public
@@ -164,7 +175,7 @@ contract Sweepstake is usingProvable {
         emit LogClaimed(msg.sender);
     }
 
-    /// @notice return balance of sweepstake
+    /// @notice function returns balance of sweepstake
     /// @return balance of sweepstake
     function getBalance()
         public

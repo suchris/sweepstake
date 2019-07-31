@@ -3,10 +3,13 @@ import "./Sweepstake.sol";
 import "openzeppelin-solidity/contracts/lifecycle/Pausable.sol";
 contract SweepstakeFactory is Pausable {
 
+    /// owner of contract
     address owner;
-    /// array for all of the sweepstakes created
+
+    /// array for all of sweepstakes created
     address[] sweepstakes;
 
+    /// @notice constructor
     constructor ()
         public
     {
@@ -20,6 +23,7 @@ contract SweepstakeFactory is Pausable {
     event LogSweepstakeCreated(address sweepstake, uint numSweepstakes, address[] sweepstakes);
 
     /// @notice check if caller has enough funds
+    /// @param _prize prize of sweepstake
     modifier hasEnoughFunds(uint _prize) {
         require (
             msg.value >= _prize,
@@ -29,6 +33,7 @@ contract SweepstakeFactory is Pausable {
     }
 
     /// @notice refund excess transfer back to caller
+    /// @param _prize prize of sweepstake
     modifier refundExcessFunds(uint _prize) {
         _;
         uint amountToRefund = msg.value - _prize;
@@ -37,7 +42,8 @@ contract SweepstakeFactory is Pausable {
         }
     }
     /// @notice factory method to create a new Sweepstake contract
-    /// @param _name The sweepstake's name
+    /// @param _name name of the sweepstake
+    /// @param _prize price of the sweepstake
     /// @dev emit LogSweepstakeCreated event
     function createSweepstake(string memory _name, uint _prize)
         public

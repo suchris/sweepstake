@@ -4,6 +4,9 @@ let catchRevert = require("./exceptionsHelpers.js").catchRevert
 contract('SweepstakeFactory', function(accounts) {
     const owner = accounts[0]
     const alice = accounts[1]
+
+    const name = "Fantastic Vacation"
+    const prize = '10000000000000000'
     
     let factory
     
@@ -31,7 +34,7 @@ contract('SweepstakeFactory', function(accounts) {
         await factory.pause({ from: owner })
         const state = await factory.paused()
         assert.isTrue(state)
-        catchRevert(factory.createSweepstake('Fantastic Vacation'))
+        catchRevert(factory.createSweepstake(name, prize))
     })
 
     it('should be unpausable by owner', async () => {

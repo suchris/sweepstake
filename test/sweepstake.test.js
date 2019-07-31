@@ -1,5 +1,6 @@
 let BN = web3.utils.BN
 let Sweepstake = artifacts.require('Sweepstake')
+let SweepstakeFactory = artifacts.require('SweepstakeFactory')
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 
 contract('Sweepstake', function(accounts) {
@@ -8,23 +9,24 @@ contract('Sweepstake', function(accounts) {
     const bob = accounts[2]
     const emptyAddress = '0x0000000000000000000000000000000000000000'
 
-    const name = 'Win a prize'
-    const prize = '1000000000000000000'
+    const name = 'Fantastic Vacation'
+    const prize = '10000000000000000'
 
     let instance
 
     beforeEach(async () => {
-        instance = await Sweepstake.new(name, {from: owner, value: prize})
+       instance = await Sweepstake.new(name, prize)
+       await instance.sendTransaction({from: owner, value: prize})
     })
 
-    it("should emit event LogEntry when someone enters the sweepstake", async() => {
+    it("should emit event LogEntered when someone enters the sweepstake", async() => {
         let eventEmitted = false
         const tx = await instance.enterSweepstake({ from: alice })
 
         if (tx.logs[0].event == "LogEntered") {
             eventEmitted = true
         }
-        assert.equal(eventEmitted, true, 'LogEntry is not emitted')
+        assert.equal(eventEmitted, true, 'LogEntered is not emitted')
 
         const result = await instance.getPlayers()
 

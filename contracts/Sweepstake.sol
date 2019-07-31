@@ -21,17 +21,18 @@ contract Sweepstake is usingProvable {
 
     /// @notice create a new sweepstake
     /// @param _name name of the sweepstake
+    /// @param _prize the prize of the prize
     /// @dev emit LogOpened event
-    constructor (string memory _name)
+    constructor (string memory _name, uint _prize)
         public
-        payable
     {
         owner = msg.sender;
         name = _name;
-        prize = msg.value;
+        prize = _prize;
         state = State.Opened;
         emit LogOpened(name);
     }
+    function() external payable {}
 
     /// @notice check if caller is owner
     modifier isOwner() {

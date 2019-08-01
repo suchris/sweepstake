@@ -53,7 +53,7 @@ contract SweepstakeFactory is Pausable {
         refundExcessFunds(_prize)
         returns (Sweepstake)
     {
-        Sweepstake theSweepstake = new Sweepstake(_name, _prize);
+        Sweepstake theSweepstake = new Sweepstake(_name, _prize, msg.sender);
         address(theSweepstake).transfer(_prize);
         sweepstakes.push(address(theSweepstake));
         emit LogSweepstakeCreated(address(theSweepstake), sweepstakes.length, sweepstakes);

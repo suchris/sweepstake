@@ -34,11 +34,12 @@ contract Sweepstake {
     /// @notice constructor creates a new sweepstake
     /// @param _name name of the sweepstake
     /// @param _prize the prize of the prize
+    /// @param _owner the caller the constructor
     /// @dev emit LogOpened event
-    constructor (string memory _name, uint _prize)
+    constructor (string memory _name, uint _prize, address _owner)
         public
     {
-        owner = msg.sender;
+        owner = _owner;
         name = _name;
         prize = _prize;
         state = State.Opened;

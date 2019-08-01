@@ -1,4 +1,5 @@
 let SweepstakeFactory = artifacts.require('SweepstakeFactory')
+let Sweepstake = artifacts.require('Sweepstake')
 let catchRevert = require("./exceptionsHelpers.js").catchRevert
 
 contract('SweepstakeFactory', function(accounts) {
@@ -7,7 +8,8 @@ contract('SweepstakeFactory', function(accounts) {
 
     const name = "Fantastic Vacation"
     const prize = '10000000000000000'
-    
+    const underFund = '1000000'
+
     let factory
     
     beforeEach(async () => {
@@ -34,7 +36,7 @@ contract('SweepstakeFactory', function(accounts) {
         await factory.pause({ from: owner })
         const state = await factory.paused()
         assert.isTrue(state)
-        catchRevert(factory.createSweepstake(name, prize))
+        catchRevert(factory.createSweepstake(name, prize, {from: owner, value: prize}))
     })
 
     it('should be unpausable by owner', async () => {
@@ -52,5 +54,13 @@ contract('SweepstakeFactory', function(accounts) {
         let state = await factory.paused()
         assert.isTrue(state)
         catchRevert(factory.pause({ from: alice }))
+    })
+
+    it('should assign proper owner to sweepstake', async () => {
+        await factory.createSweepstake(name, prize, {from: alice, value: prize})
+        let sweepstakes = await factory.getSweepstakes()
+        let contract = await Sweepstake.at(sweepstakes[0])
+        let sweepstakeOwner = await contract.getOwner()
+        assert.equal(alice, sweepstakeOwner, "Sweepstake owner should be the caller of createSweepstake")
     })
 })

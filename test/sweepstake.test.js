@@ -15,7 +15,7 @@ contract('Sweepstake', function(accounts) {
     let instance
 
     beforeEach(async () => {
-       instance = await Sweepstake.new(name, prize)
+       instance = await Sweepstake.new(name, prize, owner)
        await instance.sendTransaction({from: owner, value: prize})
     })
 
